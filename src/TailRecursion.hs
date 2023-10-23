@@ -61,8 +61,9 @@ removeDuplicates ls = reverse (helper [] ls)
     helper seen []     = seen
     helper seen (x:xs) = helper seen' rest'
       where
-        seen'          = error "TBD:helper:seen"
-        rest'          = error "TBD:helper:rest"
+        seen'          | x `notElem` seen = x:seen
+                       | otherwise = seen
+        rest'          = xs
 
 --------------------------------------------------------------------------------
 {- | `wwhile f x` such that `wwhile f x` returns a value `x'` obtained from the repeated application of the input function `f`.
