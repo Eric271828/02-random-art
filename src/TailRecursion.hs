@@ -61,7 +61,7 @@ removeDuplicates ls = reverse (helper [] ls)
     helper seen []     = seen
     helper seen (x:xs) = helper seen' rest'
       where
-        seen'          = if(elem x seen) then seen else x:seen
+        seen'          = if elem x seen then seen else x:seen
         rest'          = xs
 
 --------------------------------------------------------------------------------
@@ -102,7 +102,7 @@ Thus, the final value will be `(false, <first value for which condition is no lo
 -- 512
 
 wwhile :: (a -> (Bool, a)) -> a -> a
-wwhile f x = error "TBD:wwhile"
+wwhile f x = if fst(f x) then wwhile f (snd(f x)) else snd(f x)
 
 --------------------------------------------------------------------------------
 {- | The **fixpoint** of a function `f` starting at `x`
