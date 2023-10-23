@@ -144,7 +144,7 @@ The fixpoint of a function `f` is a point at which `f(x) = x`.
   -}
 
 fixpointL :: (Int -> Int) -> Int -> [Int]
-fixpointL f x | x == f x = [x]
+fixpointL f x | x == (f x) = [x]
               | otherwise = x : fixpointL f (f x)
 -- You should see the following behavior at the prompt:
 
