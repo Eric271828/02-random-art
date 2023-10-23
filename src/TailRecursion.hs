@@ -61,8 +61,7 @@ removeDuplicates ls = reverse (helper [] ls)
     helper seen []     = seen
     helper seen (x:xs) = helper seen' rest'
       where
-        seen'          | x `notElem` seen = x:seen
-                       | otherwise = seen
+        seen'          = if(elem x seen) then seen else x:seen
         rest'          = xs
 
 --------------------------------------------------------------------------------
