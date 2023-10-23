@@ -181,7 +181,7 @@ collatz n
 fixpointW :: (Int -> Int) -> Int -> Int
 fixpointW f x = wwhile wwf x
  where
-   wwf y       = if (f y == y) then (False, y) else  (True, f y)
+   wwf x       = if (f x == x) then (False, x) else  (True, f x)
 
 -- >>> fixpointW collatz 1
 -- 1
