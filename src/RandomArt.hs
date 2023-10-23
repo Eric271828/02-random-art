@@ -80,7 +80,7 @@ exprToString :: Expr -> String
 exprToString VarX                 = "x"
 exprToString VarY                 = "y"
 exprToString (Sine e)             = "sin(pi*" ++ exprToString e ++")"
-exprToString (Cosine e)           = error "TBD:Cos"
+exprToString (Cosine e)           = "cos(pi*" ++ exprToString e ++")"
 exprToString (Average e1 e2)      = error "TBD:Avg"
 exprToString (Times e1 e2)        = error "TBD:Times"
 exprToString (Thresh e1 e2 e3 e4) = error "TBD:Thresh"
