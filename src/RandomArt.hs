@@ -15,6 +15,7 @@ import           Codec.Picture.Types
 import qualified Data.Vector.Storable as V
 import Control.Concurrent (yield)
 import Data.Bits (Bits(xor))
+import Data.Char (GeneralCategory(CurrencySymbol))
 
 --------------------------------------------------------------------------------
 -- | A Data Type for Grayscale Expressions -------------------------------------
@@ -27,6 +28,8 @@ data Expr
   | Average Expr Expr
   | Times   Expr Expr
   | Thresh  Expr Expr Expr Expr
+  | Sq      Expr
+  | Cu      Expr
   deriving (Show)
 
 --------------------------------------------------------------------------------
@@ -86,7 +89,8 @@ exprToString (Cosine e)           = "cos(pi*" ++ exprToString e ++")"
 exprToString (Average e1 e2)      = "((" ++ exprToString e1 ++ "+" ++ exprToString e2 ++ ")/2)"
 exprToString (Times e1 e2)        = exprToString e1 ++ "*" ++ exprToString e2
 exprToString (Thresh e1 e2 e3 e4) = "(" ++ exprToString e1 ++ "<" ++ exprToString e2 ++ "?" ++ exprToString e3 ++ ":" ++ exprToString e4 ++ ")"
-
+exprToString (Sq e)               = exprToString e ++ "*" ++ exprToString e
+exprToString (Cu e)               = exprToString e ++ "*" ++ exprToString e ++ "*" ++ exprToString e
 --------------------------------------------------------------------------------
 -- | Evaluating Expressions at a given X, Y co-ordinate ------------------------
 --------------------------------------------------------------------------------
@@ -108,6 +112,8 @@ eval x y (Cosine e) = cos ( pi * eval x y e)
 eval x y (Average e1 e2) = (eval x y e1 + eval x y e2)/2
 eval x y (Times e1 e2) = eval x y e1 * eval x y e2
 eval x y (Thresh e1 e2 e3 e4) = if eval x y e1 < eval x y e2 then eval x y e3 else eval x y e4
+eval x y (Sq e) = eval x y e * eval x y e
+eval x y (Cu e) = eval x y e * eval x y e * eval x y e
 
 
 
@@ -148,7 +154,20 @@ build 0
   | otherwise = VarY
   where
     r         = rand 10
-build d       = error "TBD:build"
+
+build 1       = Average (Sine(build 0)) (Cosine (build 0))
+build 2       = Average (Sine(build 1)) (build 1)
+build 3       = Sine (build 1)
+build 4       = Cosine (build 1)
+build 5       = Average (build 4) (build 3)
+build 6       = Sq (build 4) 
+build 7       = Cu (build 1)
+build 8       = Times (build 2) (build 3)
+build 9       = Thresh (build 4) (build 6) (build 7) (build 8)
+build 10      = Cosine (build 9)
+
+
+
 
 --------------------------------------------------------------------------------
 -- | Best Image "Seeds" --------------------------------------------------------
@@ -156,16 +175,17 @@ build d       = error "TBD:build"
 
 -- grayscale
 g1, g2, g3 :: (Int, Int)
-g1 = (error "TBD:depth1", error "TBD:seed1")
-g2 = (error "TBD:depth2", error "TBD:seed2")
-g3 = (error "TBD:depth3", error "TBD:seed3")
+g1 = (3, 12)
+g2 = (5, 16)
+g3 = (9, 24)
 
 
 -- grayscale
 c1, c2, c3 :: (Int, Int)
-c1 = (error "TBD:depth1", error "TBD:seed1")
-c2 = (error "TBD:depth2", error "TBD:seed2")
-c3 = (error "TBD:depth3", error "TBD:seed3")
+c1 = (3, 30)
+c2 = (5, 20)
+c3 = (9, 24)
+
 
 --------------------------------------------------------------------------------
 --------------------------------------------------------------------------------
