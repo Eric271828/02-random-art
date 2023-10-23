@@ -78,7 +78,7 @@ sampleExpr3 =
 
 exprToString :: Expr -> String
 exprToString VarX                 = "x"
-exprToString VarY                 = error "TBD:VarY"
+exprToString VarY                 = "y"
 exprToString (Sine e)             = error "TBD:Sin"
 exprToString (Cosine e)           = error "TBD:Cos"
 exprToString (Average e1 e2)      = error "TBD:Avg"
