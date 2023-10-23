@@ -144,7 +144,7 @@ The fixpoint of a function `f` is a point at which `f(x) = x`.
   -}
 
 fixpointL :: (Int -> Int) -> Int -> [Int]
-fixpointL f x = error "TBD:fixpointL"
+fixpointL f x = x : if x == fx then [] else fixpointL f fx where fx = f x
 
 -- You should see the following behavior at the prompt:
 
